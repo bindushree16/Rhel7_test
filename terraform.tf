@@ -4,12 +4,12 @@ provider "aws" {
   region      = "us-east-2"
 }
 
-resource "aws_instance" "vijay" {
+resource "aws_instance" "bindu" {
   ami = "ami-0f93b5fd8f220e428"
   instance_type = "t2.micro"
   
 }
 
-output "vijay_ip" {
-  value = "${aws_instance.vijay.*.private_ip}"
+output "bindu_ip" {
+  value = "${aws_instance.bindu.*.private_ip}"
 }
