@@ -1,0 +1,2 @@
+accessKey="$int_aws_keys_accessKeyId"	  
+secretKey="$int_aws_keys_secretAccessKey"
