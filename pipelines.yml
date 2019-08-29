@@ -22,7 +22,7 @@ resources:
 #       shallowDepth: 10  # optional 
       
 pipelines:
-  - name: jfrog_pipeline
+  - name: jfrog_rhel_pipeline
     steps:
       - name: test1
         type: Bash
@@ -69,7 +69,7 @@ pipelines:
             - replace_envs $PWD/keys.tfvar
             - terraform apply -auto-approve -var-file="$PWD/keys.tfvar"
             - terraform output -state="$PWD/terraform.tfstate"
-            - add_pipeline_files $PWD/terraform.tfstate jfrog_pipeline
+            - add_pipeline_files $PWD/terraform.tfstate jfrog_rhel_pipeline
             - popd
 #             - pushd $res_repo_bindu_resourcePath
 #             - chmod 777 provision.sh
