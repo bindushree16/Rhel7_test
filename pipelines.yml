@@ -55,8 +55,8 @@ pipelines:
             - pwd
             - terraform --version
             - printenv
-#             - echo $res_repo_vijay_resourcePath
-#             - pushd $res_repo_vijay_resourcePath
+#             - echo $res_repo_bindu_resourcePath
+#             - pushd $res_repo_bindu_resourcePath
             - pwd
             - sudo su
             - terraform init
