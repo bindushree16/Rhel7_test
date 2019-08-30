@@ -80,7 +80,6 @@ pipelines:
       - name: rhel7_test2
         type: Bash
         configuration:
-          affinityGroup: rpm
           priority: 0
           timeoutSeconds: 50000
 #           nodePool: ubuntu_16
