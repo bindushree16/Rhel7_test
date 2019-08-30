@@ -130,7 +130,7 @@ pipelines:
           integrations:
             - name: aws_keys
           inputSteps:
-            - name: rhel7_test3
+            - name: rhel7_test2
           inputResources:
             - name: repo_bindu
           runtime:       
