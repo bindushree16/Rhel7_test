@@ -105,7 +105,7 @@ pipelines:
             - pushd $res_repo_bindu_resourcePath
             - PWD=$(pwd)
             - echo $PWD
-            - yum update
+            - sudo yum update
             - echo "$int_bindu_pem_key" > bindu.pem
             - cat $PWD/bindu.pem
             - echo $bindu_ip_address
