@@ -116,7 +116,7 @@ pipelines:
           integrations:
             - name: aws_keys
           inputSteps:
-            - name: test1
+            - name: test2
           inputResources:
             - name: repo_bindu
           runtime:       
