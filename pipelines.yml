@@ -69,7 +69,9 @@ pipelines:
             - replace_envs $PWD/keys.tfvar
             - terraform apply -auto-approve -var-file="$PWD/keys.tfvar"
             - terraform output bindu_ip #-state="$PWD/terraform.tfstate"
-            - var="$terraform output bindu_ip"
+            - bindu_ip_address=$(terraform output bindu_ip)
+            - echo "$bindu_ip_address"
+            - add_pipeline_variables bindu_ip_address=$bindu_ip_address
             - add_pipeline_files $PWD/terraform.tfstate jfrog_rhel_pipeline
             - popd
 #             - pushd $res_repo_bindu_resourcePath
