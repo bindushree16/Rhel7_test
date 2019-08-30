@@ -114,8 +114,8 @@ pipelines:
             - cp "$PWD"/bindu.pem ~/.ssh/
             - cat ~/.ssh/bindu.pem
             - which ssh
-            - scp -i ~/.ssh/bindu.pem $PWD/pipeline_installer.sh rhel7@$bindu_ip_address:~
-            - ssh -i ~/.ssh/bindu.pem rhel7@$bindu_ip_address ls
+            - scp -i ~/.ssh/bindu.pem $PWD/pipeline_installer.sh ec2-user@$bindu_ip_address:~
+            - ssh -i ~/.ssh/bindu.pem ec2-user@$bindu_ip_address ls
             
       - name: rhel7_test3
         type: Bash
