@@ -80,7 +80,6 @@ pipelines:
       - name: rhel7_test2
         type: Bash
         configuration:
-          priority: 0
           timeoutSeconds: 50000
 #           nodePool: ubuntu_16
           chronological: true
@@ -91,6 +90,8 @@ pipelines:
             - name: bindu_pem 
           inputSteps:
             - name: rehl7_test1
+          inputResources:
+            - name: repo_bindu   
           runtime:       
             type: image     #<image/host>
             image:
