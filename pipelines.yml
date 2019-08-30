@@ -7,8 +7,6 @@ resources:
 #       files:  # optional
 #         include: pipelines.yml
 #         exclude: readme
-      branches:  # optional
-        include: debain
 #         exclude: git
 #       tags:  # optional
 #         include: 
@@ -24,7 +22,7 @@ resources:
 pipelines:
   - name: jfrog_rhel_pipeline
     steps:
-      - name: test1
+      - name: rehl7_test1
         type: Bash
         configuration: 
           priority: 0
@@ -66,12 +64,20 @@ pipelines:
 #             - terraform plan -var-file="$PWD/keys.tfvar"
             - PWD=$(pwd)
             - echo PWD=$PWD
+            - replace_envs $PWD/keys.tfvar
+            - terraform apply -auto-approve -var-file="$PWD/keys.tfvar"
+            - terraform output bindu_ip
+            - bindu_ip_address=$(terraform output bindu_ip)
+            - echo "$bindu_ip_address"
+            - add_pipeline_variables bindu_ip_address=$bindu_ip_address
+            - add_pipeline_files $PWD/terraform.tfstate jfrog_pipeline
+            - popd
 #             - pushd $res_repo_bindu_resourcePath
 #             - chmod 777 provision.sh
 #             - ./provision.sh
 #             - popd
 
-      - name: test2
+      - name: rhel7_test2
         type: Bash
         configuration:
           affinityGroup: rpm
@@ -85,7 +91,7 @@ pipelines:
           integrations:
             - name: bindu_pem 
           inputSteps:
-            - name: test1
+            - name: rhel7_test1
           runtime:       
             type: image     #<image/host>
             image:
@@ -96,14 +102,22 @@ pipelines:
           onExecute:
             - echo "Test2"
             - printenv
+            - pushd $res_repo_bindu_resourcePath
             - PWD=$(pwd)
-            - echo $int_bindu_pem_key > bindu.pem
+            - echo $PWD
+            - yum update
+            - echo "$int_bindu_pem_key" > bindu.pem
             - cat $PWD/bindu.pem
             - echo $bindu_ip_address
-            - chmod 600 $PWD/bindu.pem
-            - ssh -i $PWD/bindu.pem ubuntu@$bindu_ip_address
+            - echo "$PWD"
+            - sudo chmod 600 $PWD/bindu.pem
+            - cp "$PWD"/bindu.pem ~/.ssh/
+            - cat ~/.ssh/bindu.pem
+            - which ssh
+            - scp -i ~/.ssh/bindu.pem $PWD/pipeline_installer.sh rhel7@$bindu_ip_address:~
+            - ssh -i ~/.ssh/bindu.pem rhel7@$bindu_ip_address ls
             
-      - name: test_rhel
+      - name: rhel_test3
         type: Bash
         configuration: 
           priority: 0
@@ -116,7 +130,7 @@ pipelines:
           integrations:
             - name: aws_keys
           inputSteps:
-            - name: test2
+            - name: rhel_test2
           inputResources:
             - name: repo_bindu
           runtime:       
