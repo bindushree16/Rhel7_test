@@ -91,7 +91,7 @@ pipelines:
           integrations:
             - name: bindu_pem 
           inputSteps:
-            - name: rhel7_test1
+            - name: rehl7_test1
           runtime:       
             type: image     #<image/host>
             image:
@@ -117,7 +117,7 @@ pipelines:
             - scp -i ~/.ssh/bindu.pem $PWD/pipeline_installer.sh rhel7@$bindu_ip_address:~
             - ssh -i ~/.ssh/bindu.pem rhel7@$bindu_ip_address ls
             
-      - name: rhel_test3
+      - name: rhel7_test3
         type: Bash
         configuration: 
           priority: 0
@@ -130,7 +130,7 @@ pipelines:
           integrations:
             - name: aws_keys
           inputSteps:
-            - name: rhel_test2
+            - name: rhel7_test3
           inputResources:
             - name: repo_bindu
           runtime:       
