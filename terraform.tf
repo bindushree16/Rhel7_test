@@ -5,11 +5,12 @@ provider "aws" {
 }
 
 resource "aws_instance" "bindu" {
-  ami = "ami-0f93b5fd8f220e428"
+  ami = "ami-0a74bfeb190bd404f"
   instance_type = "t2.micro"
+   key_name = "bindu"
   
 }
 
 output "bindu_ip" {
-  value = "${aws_instance.bindu.*.private_ip}"
+  value = "${aws_instance.bindu.*.public_ip}"
 }
