@@ -66,50 +66,43 @@ pipelines:
 #             - terraform plan -var-file="$PWD/keys.tfvar"
             - PWD=$(pwd)
             - echo PWD=$PWD
-            - replace_envs $PWD/keys.tfvar
-            - terraform apply -auto-approve -var-file="$PWD/keys.tfvar"
-            - terraform output bindu_ip #-state="$PWD/terraform.tfstate"
-            - bindu_ip_address=$(terraform output bindu_ip)
-            - echo "$bindu_ip_address"
-            - add_pipeline_variables bindu_ip_address=$bindu_ip_address
-            - add_pipeline_files $PWD/terraform.tfstate jfrog_rhel_pipeline
-            - popd
 #             - pushd $res_repo_bindu_resourcePath
 #             - chmod 777 provision.sh
 #             - ./provision.sh
 #             - popd
 
-#       - name: test2
-#         type: Bash
-#         configuration:
-#           affinityGroup: rpm
-#           priority: 0
-#           timeoutSeconds: 50000
-# #           nodePool: ubuntu_16
-#           chronological: true
-#           environmentVariables:
-#             env1: value1
-#             env2: value2
-# #           integrations:
-# #             - name: dockerHubIntegration
-# #             - name: artifactoryIntegration  
-#           inputSteps:
-#             - name: test1
-# #           inputResources:
-# #             - name: bindu_git
-# #               trigger: true    # default true
-#           runtime:       
-#             type: image     #<image/host>
-#             image:
-#               custom:
-#                 name: drydock/u16
-#                 tag: master
-#         execution:
-#           onExecute:
-#             - echo "Test2"
-#             - printenv
-# #             - ssh ec2-user@
-
+      - name: test2
+        type: Bash
+        configuration:
+          affinityGroup: rpm
+          priority: 0
+          timeoutSeconds: 50000
+#           nodePool: ubuntu_16
+          chronological: true
+          environmentVariables:
+            env1: value1
+            env2: value2
+          integrations:
+            - name: bindu_pem 
+          inputSteps:
+            - name: test1
+          runtime:       
+            type: image     #<image/host>
+            image:
+              custom:
+                name: drydock/u16
+                tag: master
+        execution:
+          onExecute:
+            - echo "Test2"
+            - printenv
+            - PWD=$(pwd)
+            - echo $int_bindu_pem_key > bindu.pem
+            - cat $PWD/bindu.pem
+            - echo $bindu_ip_address
+            - chmod 600 $PWD/bindu.pem
+            - ssh -i $PWD/bindu.pem ubuntu@$bindu_ip_address
+            
       - name: test2
         type: Bash
         configuration: 
@@ -137,6 +130,7 @@ pipelines:
             - echo "test3"  
             - pushd $res_repo_bindu_resourcePath
             - echo $PWD
+            - echo "$bindu_ip_address"
             - terraform init
             - replace_envs $PWD/keys.tfvar
             - restore_pipeline_files jfrog_rhel_pipeline $PWD/terraform.tfstate
