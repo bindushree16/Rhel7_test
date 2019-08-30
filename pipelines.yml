@@ -103,7 +103,7 @@ pipelines:
             - chmod 600 $PWD/bindu.pem
             - ssh -i $PWD/bindu.pem ubuntu@$bindu_ip_address
             
-      - name: test2
+      - name: test_rhel
         type: Bash
         configuration: 
           priority: 0
@@ -152,7 +152,7 @@ pipelines:
 # #             - name: dockerHubIntegration
 # #             - name: artifactoryIntegration  
 #           inputSteps:
-#             - name: test3
+#             - name: test_rhel
 # #           inputResources:
 # #             - name: bindu_git
 # #               trigger: true    # default true
