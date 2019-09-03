@@ -5,7 +5,8 @@ provider "aws" {
 }
 
 resource "aws_instance" "bindu" {
-  ami = "ami-006b2db4ca7e39d7d"
+  ami = "ami-00e8bfeceeea34bf7" #centos 7.6
+  #ami = "ami-006b2db4ca7e39d7d"  #rhel 7 
   instance_type = "t2.micro"
   key_name = "bindu"
   vpc_security_group_ids = [ "sg-011ef8db4885d7d22" ]
