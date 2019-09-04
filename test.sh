@@ -1,4 +1,5 @@
 #!/bin/bash -e
+
 echo "============ list of docker containers ============"
 sudo docker ps 
 echo "============ checking nexec container is up ============"
