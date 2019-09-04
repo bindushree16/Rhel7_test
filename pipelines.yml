@@ -3,21 +3,7 @@ resources:
     type: GitRepo
     configuration:
       gitProvider: bindu_github
-      path: bindushree16/Rhel7_test
-#       files:  # optional
-#         include: pipelines.yml
-#         exclude: readme
-#         exclude: git
-#       tags:  # optional
-#         include: 
-#         exclude: 
-#       buildOn:  # optional
-#         commit: true
-#          pullRequestCreate: true
-#          pullRequestClose: false
-#          releaseCreate: false
-#          tagCreate: false
-#       shallowDepth: 10  # optional 
+      path: bindushree16/Rhel7_test 
       
 pipelines:
   - name: jfrog_rhel_pipeline
@@ -27,14 +13,11 @@ pipelines:
         configuration: 
           priority: 0
           timeoutSeconds: 50000
-#           nodePool: ubuntu_16
-#           chronological: true
           environmentVariables:
             env1: value1
             env2: value2
           integrations:
-            - name: aws_keys
-#             - name: artifactoryIntegration  
+            - name: aws_keys  
           inputResources:
             - name: repo_bindu
           runtime:       
@@ -43,46 +26,29 @@ pipelines:
               custom:
                 name: drydock/u16
                 tag: master
-#                 registry: art
-#                 sourceRepository: docker # required if registry is artifactory
-#                 region: <string> # required if registry is AWS
-#                 options:
         execution:
           onExecute:
-            - echo "test1"  
             - pwd
             - terraform --version
             - printenv
-#             - echo $res_repo_bindu_resourcePath
-#             - pushd $res_repo_bindu_resourcePath
-            - pwd
-            - sudo su
-            - terraform init
             - pushd $res_repo_bindu_resourcePath
             - terraform init            
             - ls -la
-#             - terraform plan -var-file="$PWD/keys.tfvar"
             - PWD=$(pwd)
             - echo PWD=$PWD
             - replace_envs $PWD/keys.tfvar
             - terraform apply -auto-approve -var-file="$PWD/keys.tfvar"
             - terraform output bindu_ip
-            - bindu_ip_address=$(terraform output bindu_ip)
+            - vijay_ip_address=$(terraform output bindu_ip)
             - echo "$bindu_ip_address"
             - add_pipeline_variables bindu_ip_address=$bindu_ip_address
             - add_pipeline_files $PWD/terraform.tfstate jfrog_pipeline
             - popd
-#             - pushd $res_repo_bindu_resourcePath
-#             - chmod 777 provision.sh
-#             - ./provision.sh
-#             - popd
 
       - name: rhel7_test2
         type: Bash
         configuration:
           timeoutSeconds: 50000
-#           nodePool: ubuntu_16
-          chronological: true
           environmentVariables:
             env1: value1
             env2: value2
@@ -100,30 +66,31 @@ pipelines:
                 tag: master
         execution:
           onExecute:
-            - echo "Test2"
             - printenv
             - pushd $res_repo_bindu_resourcePath
             - PWD=$(pwd)
             - echo $PWD
-            - sudo apt-get update
+            - replace_envs $PWD/pipeline_installer.sh
+            - cat $PWD/pipeline_installer.sh
             - echo "$int_bindu_pem_key" > bindu.pem
             - cat $PWD/bindu.pem
-            - echo $bindu_ip_address
-            - echo "$PWD"
-            - sudo chmod 600 $PWD/bindu.pem
+            - echo $vijay_ip_address
+            - chmod 777 "$PWD"/pipeline_installer.sh
+            - chmod 777 "$PWD"/test.sh
+            - sudo chmod 600 "$PWD"/bindu.pem
             - cp "$PWD"/bindu.pem ~/.ssh/
             - cat ~/.ssh/bindu.pem
             - which ssh
-            - scp -i ~/.ssh/bindu.pem $PWD/pipeline_installer.sh ec2-user@$bindu_ip_address:~
-            - ssh -i ~/.ssh/bindu.pem ec2-user@$bindu_ip_address ls
+            - scp -i ~/.ssh/bindu.pem $PWD/pipeline_installer.sh test.sh ubuntu@$bindu_ip_address:~
+            - ssh -i ~/.ssh/bindu.pem ubuntu@$bindu_ip_address ls
+            - ssh -i ~/.ssh/bindu.pem ubuntu@$bindu_ip_address "sudo ./pipeline_installer.sh"
+            - ssh -i ~/.ssh/bindu.pem ubuntu@$bindu_ip_address "sudo ./test.sh"
             
       - name: rhel7_test3
         type: Bash
         configuration: 
           priority: 0
           timeoutSeconds: 50000
-# #           nodePool: ubuntu_16
-#           chronological: true
           environmentVariables:
             env1: value1
             env2: value2
@@ -140,8 +107,7 @@ pipelines:
                 name: drydock/u16
                 tag: master
         execution:
-          onExecute:
-            - echo "test3"  
+          onExecute:  
             - pushd $res_repo_bindu_resourcePath
             - echo $PWD
             - echo "$bindu_ip_address"
@@ -150,43 +116,6 @@ pipelines:
             - restore_pipeline_files jfrog_rhel_pipeline $PWD/terraform.tfstate
             - terraform destroy -auto-approve -var-file="$PWD/keys.tfvar"
             - popd
+            
+            
 
-#       - name: test4
-#         type: Bash
-#         configuration:
-#           affinityGroup: rpm
-#           priority: 0
-#           timeoutSeconds: 50000
-# #           nodePool: ubuntu_16
-#           chronological: true
-#           environmentVariables:
-#             env1: value1
-#             env2: value2
-# #           integrations:
-# #             - name: dockerHubIntegration
-# #             - name: artifactoryIntegration  
-#           inputSteps:
-#             - name: test_rhel
-# #           inputResources:
-# #             - name: bindu_git
-# #               trigger: true    # default true
-# #           outputResources:
-# #             - name: myOutputResource1  
-#           runtime:       
-#             type: image       #<image/host>
-#             image:
-#               auto:
-#                 language: go
-#                 versions:
-#                   - 1.12.5
-# # e
-# #                 name: drydock/u16node
-# #                 tag: master
-# #                 registry: art
-# #                 sourceRepository: docker # required if registry is artifactory
-# #                 region: <string> # required if registry is AWS
-# #                 options:
-#         execution:
-#           onExecute:
-#             - echo "test4"  
-#             - printenv
