@@ -39,7 +39,7 @@ pipelines:
             - replace_envs $PWD/keys.tfvar
             - terraform apply -auto-approve -var-file="$PWD/keys.tfvar"
             - terraform output bindu_ip
-            - vijay_ip_address=$(terraform output bindu_ip)
+            - bindu_ip_address=$(terraform output bindu_ip)
             - echo "$bindu_ip_address"
             - add_pipeline_variables bindu_ip_address=$bindu_ip_address
             - add_pipeline_files $PWD/terraform.tfstate jfrog_pipeline
@@ -76,7 +76,7 @@ pipelines:
             - cat $PWD/pipeline_installer.sh
             - echo "$int_bindu_pem_key" > bindu.pem
             - cat $PWD/bindu.pem
-            - echo $vijay_ip_address
+            - echo $bindu_ip_address
             - chmod 777 "$PWD"/pipeline_installer.sh
             - chmod 777 "$PWD"/test.sh
             - sudo chmod 600 "$PWD"/bindu.pem
