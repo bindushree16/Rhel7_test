@@ -81,10 +81,10 @@ pipelines:
             - cp "$PWD"/bindu.pem ~/.ssh/
             - cat ~/.ssh/bindu.pem
             - which ssh
-            - scp -rp -i ~/.ssh/bindu.pem $PWD/pipeline_installer.sh test.sh ubuntu@$bindu_ip_address:~
-            - ssh -i ~/.ssh/bindu.pem ubuntu@$bindu_ip_address ls
-            - ssh -i ~/.ssh/bindu.pem ubuntu@$bindu_ip_address "sudo ./pipeline_installer.sh"
-            - ssh -i ~/.ssh/bindu.pem ubuntu@$bindu_ip_address "sudo ./test.sh"
+            - scp -i ~/.ssh/bindu.pem $PWD/pipeline_installer.sh test.sh ec2-user@$bindu_ip_address:~
+            - ssh -i ~/.ssh/bindu.pem ec2-user@$bindu_ip_address ls
+            - ssh -i ~/.ssh/bindu.pem ec2-user@$bindu_ip_address "sudo ./pipeline_installer.sh"
+            - ssh -i ~/.ssh/bindu.pem ec2-user@$bindu_ip_address "sudo ./test.sh"
             
       - name: rhel7_test3
         type: Bash
