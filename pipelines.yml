@@ -54,6 +54,8 @@ pipelines:
             env2: value2
           integrations:
             - name: bindu_pem 
+            - name: ART_keys
+            - name: art  
           inputSteps:
             - name: rehl7_test1
           inputResources:
