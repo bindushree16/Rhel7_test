@@ -9,7 +9,7 @@ sudo yum-config-manager \
 sudo yum -y install docker-ce-18.06.3.ce-3.el7
 sudo yum -y install containerd.io
 sudo systemctl start docker
-sudo yum install wget
+sudo yum install -y wget
 sudo wget "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -O /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 docker --version
