@@ -57,7 +57,7 @@ pipelines:
             - name: ART_keys
             - name: art  
           inputSteps:
-            - name: rehl7_test1
+            - name: AWS_machine
           inputResources:
             - name: repo_bindu   
           runtime:       
@@ -99,7 +99,7 @@ pipelines:
           integrations:
             - name: aws_keys
           inputSteps:
-            - name: rhel7_test2
+            - name: installation
           inputResources:
             - name: repo_bindu
           runtime:       
