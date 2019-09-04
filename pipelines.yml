@@ -3,12 +3,12 @@ resources:
     type: GitRepo
     configuration:
       gitProvider: bindu_github
-      path: bindushree16/Rhel7_test 
+      path: bindushree16/automation_test 
       
 pipelines:
-  - name: jfrog_rhel_pipeline
+  - name: automation_pipeline
     steps:
-      - name: rehl7_test1
+      - name: Spin_up_AWS_machine
         type: Bash
         configuration: 
           priority: 0
@@ -45,7 +45,7 @@ pipelines:
             - add_pipeline_files $PWD/terraform.tfstate jfrog_pipeline
             - popd
 
-      - name: rhel7_test2
+      - name: installation
         type: Bash
         configuration:
           timeoutSeconds: 50000
@@ -88,7 +88,7 @@ pipelines:
             - ssh -i ~/.ssh/bindu.pem centos@$bindu_ip_address "sudo ./pipeline_installer.sh"
             - ssh -i ~/.ssh/bindu.pem centos@$bindu_ip_address "sudo ./test.sh"
             
-      - name: rhel7_test3
+      - name: Destroy_AWS_machine
         type: Bash
         configuration: 
           priority: 0
