@@ -8,7 +8,7 @@ resources:
 pipelines:
   - name: automation_pipeline
     steps:
-      - name: Spin_up_AWS_machine
+      - name: AWS_machine
         type: Bash
         configuration: 
           priority: 0
@@ -88,7 +88,7 @@ pipelines:
             - ssh -i ~/.ssh/bindu.pem centos@$bindu_ip_address "sudo ./pipeline_installer.sh"
             - ssh -i ~/.ssh/bindu.pem centos@$bindu_ip_address "sudo ./test.sh"
             
-      - name: Destroy_AWS_machine
+      - name: Destroy_machine
         type: Bash
         configuration: 
           priority: 0
