@@ -3,7 +3,7 @@ resources:
     type: GitRepo
     configuration:
       gitProvider: bindu_github
-      path: bindushree16/automation_test 
+      path: bindushree16/automation_test_aws 
       
 pipelines:
   - name: automation_pipeline
